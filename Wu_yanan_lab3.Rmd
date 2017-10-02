@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+author: "Wu Yanan"
+output: html_notebook
+---
+This is lab3.
+
+#Question 1
+```{r}
+library(MASS)
+car <- Cars93
+set.seed(1)
+training <- sample(row.names(car),40,replace = FALSE)
+train <- car[training,]
+train
+data <- as.numeric(row.names(train))
+test <- car[-data,]
+test
+write.csv(train, file = "train.csv")
+r.train <- read.csv("train.csv")
+nonusa <- r.train[r.train$Origin == "non-USA",]
+dim(nonusa)
+usa <- r.train[r.train$Origin == "USA",]
+dim(usa)
+```
+#Question 2
+```{r}
+ten <- sample(c("boy", "girl"),size = 10,replace = TRUE,prob = c(0.515,0.485))
+ten
+boy.ten <- sum(ten == "boy")
+boy.ten
+girl.ten <- sum(ten == "girl")
+girl.ten
+thousand <- sample(c("boy", "girl"), size = 10000, replace = TRUE, prob = c(0.515,0.485))
+boy.thousand <- sum(thousand == "boy")
+boy.thousand
+girl.thousand <- sum(thousand == "girl")
+girl.thousand
+```
+#Question 3
+```{r}
+three.boy <- dbinom(0:3, size = 10, prob = 0.515)
+plot(0:3, three.boy, type = "b")
+
+eight.boy <- pbinom(8:10, size = 10, prob = 0.485,lower.tail = FALSE)
+plot(8:10, eight.boy,type = "b")
+```
+
+#Question 4
+```{r}
+1 - dpois(0,2) - dpois(1,2) - dpois(2,2) - dpois(3,2) - dpois(4,2)
+ppois(5,lambda = 2, lower.tail = FALSE)
+
+n <- 20
+x <- 0:20
+y <- dpois(x, lambda = 2)
+plot(x,y,type = "b", pch = 16, col = "red")
+```
+
+
+
