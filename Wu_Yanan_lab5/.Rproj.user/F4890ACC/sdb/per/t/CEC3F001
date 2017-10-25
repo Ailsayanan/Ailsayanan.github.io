@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#Question 1\nq95 <- qnorm(0.975)\n\n#Question 2(exercise 3)\nq95 <- qnorm(0.975)\nstd.err <- 7/sqrt(50)\nconf.95 <- c(18.5+q95*std.err, 18.5-q95*std.err)\nconf.95\n\n#Question 3(exercise 5)\nq90 <- qnorm(0.95)\nstd.err.usa <- sqrt(0.165*(1-0.165)/50)\nstd.err.town <- sqrt(0.24*(1-0.24)/50)\nconf.90.town <- c(0.24-q90*std.err.town, 0.24+q90*std.err.town)\nconf.90.usa <- c(0.165-q90*std.err.usa, 0.165+q90*std.err.usa)\nconf.90.town\nconf.90.usa\n",
+    "created" : 1508426104992.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "175885036",
+    "id" : "CEC3F001",
+    "lastKnownWriteTime" : 1508431173,
+    "last_content_update" : 1508431173751,
+    "path" : "D:/R/lab/Wu_Yanan_lab5/Wu_Yanan_lab5.R",
+    "project_path" : "Wu_Yanan_lab5.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

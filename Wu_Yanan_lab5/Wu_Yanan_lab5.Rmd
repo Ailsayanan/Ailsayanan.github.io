@@ -1,0 +1,296 @@
+---
+title: "Geog533 Lab 5"
+author: "Wu_Yanan"
+output:  
+  html_notebook:
+    toc: TRUE
+    toc_float: TRUE
+---
+## Question 1 
+This is Exercise 1 of the textbook.
+
+A planner wishes to estimate average household size for a community within 0.2. The planner desires a 95% confidence level. A small survey indicates that the standard deviation of household size is 2.0. How large should the sample be?
+
+```{r echo=TRUE}
+q95 <- qnorm(0.975)
+std.err <- 0.2/q95
+sample <- 2 * 2 /(std.err*std.err)
+sprintf("The sample should be %f",round(sample + 1, digits = 0))
+```
+
+
+
+## Question 2 
+This is Exercise 3 of the textbook.
+
+The tolerable level of a certain pollutant is 16 mg/l. A researcher takes a sample of size n = 50, and finds that the mean level of the pollutant is 18.5 mg/l, with a standard deviation of 7 mg/l. Construct a 95% confidence interval around the sample mean, and determine whether the tolerable level is within this interval.
+
+```{r echo=TRUE}
+q95 <- qnorm(0.975)
+std.err <- 7/sqrt(50)
+conf.95 <- c(18.5+q95*std.err, 18.5-q95*std.err)
+conf.95
+  print("the tolerable level is not within this interval")
+```
+
+
+
+## Question 3
+This is Exercise 5 of the textbook.
+
+The proportion of people changing residence in the USA each year is 0.165. A researcher believes that the proportion may be different in the town of Amherst. She surveys 50 individuals in the town of Amherst and finds that the proportion who moved last year is 0.24. Is there evidence to conclude that the town has a mobility rate that is different from the national average? Use α = 0.05 and find a 90% confidence interval around the sample proportion, and state your conclusion.
+
+```{r}
+library(MASS)
+result <- prop.test(0.24*50, n=50,p=0.3,conf.level = 0.9)
+con.inter <- result$conf.int[1:2]
+con.inter
+if(result$p.value>0.05){
+  print("the town has a rate that is same from national average")
+}else{
+  print("the town has a rate that is different from national average")
+}
+
+```
+
+
+## Question 4 
+This is Exercise 7 of the textbook.
+
+A survey of the white and nonwhite population in a local area reveals the following annual trip frequencies to the nearest state park: 
+
+<center>$\bar{x_{1}}=4.1$,   $s_{1}^{2} = 14.3$, $n_{1} = 20$</center>
+
+<center>$\bar{x_{2}}=3.1$,   $s_{2}^{2} = 12.0$, $n_{1} = 16$</center>
+
+where the subscript ‘1’ denotes the white population and the subscript ‘2’ denotes the nonwhite population. 
+
+<ol type="a">
+  <li>Assume that the variances are equal, and test the null hypothesis that there is no difference between the park-going frequencies of whites and nonwhites. </li>
+  <li>Repeat the exercise, assuming that the variances are unequal. </li>
+  <li>Find the p-value associated with the tests in parts (a) and (b). </li>
+  <li>Associated with the test in part (a), find a 95% confidence interval for the difference in means. </li>
+  <li>Repeat parts (a)–(d), assuming sample sizes of n<sub>1</sub> = 24 and n<sub>2</sub> = 12. </li>
+</ol>
+
+
+```{r}
+#a
+library(MASS)
+x1 <- mvrnorm(n = 20, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 16, mu = 3.1, Sigma = 12,empirical = TRUE)
+resulta<- t.test(x1,x2, var.equal = TRUE)
+if (resulta$p.value > 0.05){
+  print("No difference between the park-going frequencies of whites and nonwhites")
+}else{
+  print("There is difference between the park-going frequencies of whites and nonwhites")
+}
+```
+
+```{r}
+#b
+library(MASS)
+x1 <- mvrnorm(n = 20, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 16, mu = 3.1, Sigma = 12,empirical = TRUE)
+resultb <- t.test(x1,x2, var.equal = FALSE)
+if (resultb$p.value > 0.05){
+  print("No difference between the park-going frequencies of whites and nonwhites")
+}else{
+  print("There is difference between the park-going frequencies of whites and nonwhites")
+}
+```
+
+```{r}
+#c
+p.value.a<- resulta$p.value
+p.value.b <- resultb$p.value
+sprintf("p.value in part(a)=%f",p.value.a)
+sprintf("p.value in part(b)=%f",p.value.b)
+```
+
+```{r, echo=TRUE}
+#d
+x1 <- mvrnorm(n = 20, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 16, mu = 3.1, Sigma = 12,empirical = TRUE)
+resulta<- t.test(x1,x2, conf.level = 0.95)$conf.int[1:2]
+resulta
+```
+
+```{r}
+#e
+x1 <- mvrnorm(n = 24, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 12, mu = 3.1, Sigma = 12,empirical = TRUE)
+resulta<- t.test(x1,x2, var.equal = TRUE)
+if (resulta$p.value > 0.05){
+  print("No difference between the park-going frequencies of whites and nonwhites")
+}else{
+  print("There is difference between the park-going frequencies of whites and nonwhites")
+}
+
+library(MASS)
+x1 <- mvrnorm(n = 24, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 12, mu = 3.1, Sigma = 12,empirical = TRUE)
+resultb <- t.test(x1,x2, var.equal = FALSE)
+if (resultb$p.value > 0.05){
+  print("No difference between the park-going frequencies of whites and nonwhites")
+}else{
+  print("There is difference between the park-going frequencies of whites and nonwhites")
+}
+
+e.p.value.a <- resulta$p.value
+e.p.value.b <- resultb$p.value
+sprintf("p.value in part(a)=%f",e.p.value.a)
+sprintf("p.value in part(b)=%f",e.p.value.b)
+
+x1 <- mvrnorm(n = 20, mu = 4.1, Sigma = 14.3,empirical = TRUE)
+x2 <- mvrnorm(n = 16, mu = 3.1, Sigma = 12,empirical = TRUE)
+e.con.inter<- t.test(x1,x2, conf.level = 0.95)$conf.int[1:2]
+e.con.inter
+```
+
+## Question 5
+This is Exercise 9 of the textbook.
+
+A researcher suspects that the level of a particular stream’s pollutant is higher than the allowable limit of 4.2 mg/l. A sample of n = 17 reveals a mean pollutant level of = 6.4 mg/l, with a standard deviation of 4.4 mg/l. Is there sufficient evidence that the stream’s pollutant level exceeds the allowable limit? What is the p-value?
+
+```{r}
+library(MASS)
+x <- mvrnorm(n = 17,mu=6.4,Sigma = 4.4*4.4,empirical = TRUE)
+result <- t.test(x,mu=4.2)
+p.value <- result$p.value
+sprintf(" the p.value is %f", p.value)
+if(result$p.value > 0.05){
+  print("stream's pollutant is not higher than the allowable limit")
+  }else{
+    print("stream's pollutant is higher than the sllowable limit")
+  }
+```
+
+
+## Question 6
+This is Exercise 13 of the textbook.
+
+Suppose we want to know whether the mean length of unemployment differs among the residents of two local communities. Sample information is as follows: 
+
+Community A: sample mean = 3.4 months,  s = 1.1 month,  n = 52 
+
+Community B: sample mean = 2.8 months, s = 0.8 month,  n = 62 
+
+Set up the null and alternative hypotheses. Use α = 0.05. Choose a particular test, and show the rejection regions on a diagram. Calculate the test statistic, and decide whether to reject the null hypothesis. (Do not assume that the two standard deviations are equal to one another – therefore a pooled estimate of s should not be found.)
+
+```{r}
+library(MASS)
+xa <- mvrnorm(n = 52,mu=3.4,Sigma = 1.1*1.1,empirical = TRUE)
+xb <- mvrnorm(n=62,mu=2.8,Sigma = 0.8*0.8,empirical = TRUE)
+result.6 <- t.test(xa,xb,var.equal = FALSE)
+if(result.6$p.value > 0.05){
+  print("The mean length differ amont the tow communities")
+  }else{
+    print("The mean length not differ amont the tow communities")
+  }
+
+```
+```{r}
+q95 <- qnorm(0.975) 
+curve(dnorm,from = -3,to = 3)
+x <- c(-3,seq(-3,-q95,by = 0.01),-q95)
+y <- c(0,dnorm(seq(-3,-q95,by = 0.01)),0)
+polygon(x,y,col="yellow")
+
+q95 <- qnorm(0.975) 
+x1 <- c(q95,seq(q95,3,by = 0.01),3)
+y1 <- c(0,dnorm(seq(q95,3,by = 0.01)),0)
+polygon(x1,y1,col="yellow")
+```
+
+
+
+
+## Question 7
+This is Exercise 15 of the textbook.
+
+Find the 90% and 95% confidence intervals for the following mean stream link lengths: 
+
+100, 426, 322, 466, 112, 155, 388, 1155, 234, 324, 556, 221, 18, 133, 177, 441.
+```{r}
+number <- c(100, 426, 322, 466, 112, 155, 388, 1155, 234, 324, 556, 221, 18, 133, 177, 441)
+mean <- mean(number)
+sd <- sd(number)
+result <- mvrnorm(n = 16, mu = mean, Sigma = sd^2, empirical = TRUE)
+f.result <- t.test(result, conf.level = 0.9)
+con.90 <- f.result$conf.int[1:2]
+con.90
+
+f.result.95 <- t.test(result, conf.level = 0.95)
+con.95 <- f.result.95$conf.int[1:2]
+con.95
+```
+
+
+## Question 8
+This is Exercise 16 of the textbook.
+
+A researcher surveys 50 individuals in Smithville and 40 in Amherst, finding that 30% of Smithville residents moved last year, while only 22% of Amherst residents did. Is there enough evidence to conclude that mobility rates in the two communities differ? Use a two-tailed alternative, and α = 0.10. Again, find the p-value and a 90% confidence interval for the difference in proportions.
+
+```{r}
+b.8 <- prop.test(c(15,8.8), n=c(50,40), conf.level = 0.9)
+if(b.8$p.value>0.1){
+  print("The mobility rates is same")
+}else{
+  print("The mobility rates is differ")
+}
+sprintf(" The p-value is %f",b.8$p.value)
+print(b.8$conf.int[1:2])
+```
+
+
+## Question 9
+This is Exercise 17 of the textbook.
+
+A survey of two towns is carried out to see whether there are differences in levels of education. Town A has a mean of 12.4 years of education among its residents; Town B has a mean of 14.4 years. Fifteen residents were surveyed in each town. The sample standard deviation was 3.0 in Town A, and 4.0 in Town B. Is there a significant difference in education between the two towns?
+
+<ol type="a">
+  <li>Assume the variances are equal. </li>
+  <li>Assume the variances are not equal. </li>
+</ol>
+
+In each case, state the null and alternative hypotheses, and test the null hypothesis, using α = 0.05. Find the p-values and a 95% confidence interval for the difference.
+
+```{r}
+#a
+library(MASS)
+town.a <- mvrnorm(n=15,mu=12.4,Sigma = 9,empirical = TRUE)
+town.b <- mvrnorm(n=15,mu=14.4,Sigma = 16,empirical = TRUE)
+test.true <- t.test(town.a, town.b,var.equal = TRUE)
+if(test.true$p.value>0.05){
+  print("There is no significant difference in education between two towns")
+}else{
+  print("There is significant difference in education between two towns")
+}
+```
+
+```{r}
+town.a <- mvrnorm(n=15,mu=12.4,Sigma = 9,empirical = TRUE)
+town.b <- mvrnorm(n=15,mu=14.4,Sigma = 16,empirical = TRUE)
+test.false <- t.test(town.a, town.b, var.equal = FALSE)
+if(test.false$p.value>0.05){
+  print("There is no significant difference in education between two towns")
+}else{
+  print("There is significant difference in education between two towns")
+}
+
+```
+
+## Question 10
+This is Exercise 20 of the textbook.
+
+A survey of n = 50 people reveals that the proportion of residents in a community who take the bus to work is 0.15. Is this significantly different from the statewide average of 0.10? Use a Type I error probability of 0.05.
+```{r}
+con.int <- prop.test(50*0.15, n=50,p=0.1)
+if(con.int$p.value>0.05){
+  print("there is no significant different from the statewide average")
+}else{
+  print("there is significant different from the statewide average")
+}
+```
+
