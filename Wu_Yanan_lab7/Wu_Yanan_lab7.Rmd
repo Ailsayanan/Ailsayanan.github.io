@@ -30,9 +30,9 @@ df <- data.frame(income,edu)
 ct <- cor.test(income, edu, method = "pearson")
 ct$estimate[[1]]
 if (ct$p.value > 0.05){
-  print("The null hypothesize is true")
+  print("They are not related")
 }else{
-  print("The null hypothesize is not true")
+  print("They are related")
 }
 ```
 
@@ -46,9 +46,9 @@ income <- c(30,28,52,40,35)
 edu <- c(12,13,18,16,17)
 test <- cor.test(income, edu, method = "pearson")
 if (test$p.value > 0.05){
-  print("This is a null hypothesis")
+  print("They are not related")
 }else{
-  print("This is not a null hypothesis")
+  print("They are related")
 }
 ```
 
@@ -73,9 +73,9 @@ Test whether the observed value of rs from part (c) is significantly different f
 Solution 1d
 ```{r}
 if (test2$p.value>0.05){
-  print("It is not different from zero")
+  print("They are not related")
 }else{
-  print("It is different from zero")
+  print("They are related")
 }
 ```
 
@@ -90,10 +90,10 @@ The distribution of the t-statistic for testing the significance of a correlatio
 ### Solution
 ```{r}
 t.36 <- qt(0.975, df = 34)
-r.36 <- sqrt(t^2/(34 + t^2))
+r.36 <- sqrt(t.36^2/(34 + t.36^2))
 
 t.80 <- qt(0.975, df = 78)
-r.80 <- sqrt(t^2/(78 + t^2))
+r.80 <- sqrt(t.80^2/(78 + t.80^2))
 
 print(paste("when the sample size is 36,The smallest absolute value is",round(r.36, digits = 3)))
 print(paste("when the sample size is 80,The smallest absolute value is",round(r.80, digits = 3)))
@@ -124,9 +124,9 @@ Y <- c(6,6,10,4)
 result <- cor.test(X, Y, method = "pearson")
 result$estimate[[1]]
 if (result$p.value>0.05){
-  print("The two data is not correlation")
+  print("They are not related")
 }else{
-  print("The two daa is correlation")
+  print("They are related")
 }
 ```
 
@@ -157,9 +157,9 @@ df <- data.frame(year,income,races)
 test <- cor.test(df$income, df$races, method = "pearson")
 test$p.value
 if (test$p.value > 0.05){
-  print("The correlation coefficient is equal to zero")
+  print("They are not related")
 }else{
-  print("The correlation coefficient is not equal to zero")
+  print("They are related")
 }
 ```
 
@@ -192,9 +192,9 @@ test <- cor.test(df$x, df$y, method = "spearman")
 es.value <- test$estimate
 es.value[[1]]
 if (test$p.value > 0.1){
-  print("The true correlation is equal to zero")
+  print("They are not related")
 }else{
-  print("The true correlation is not equal to zero")
+  print("They are related")
 }
 ```
 
@@ -223,9 +223,9 @@ test <- cor.test(x, y,method = "pearson")
 estimate <- test$estimate[[1]]
 estimate
 if (estimate > 0.05){
-  print("It has correlation coefficient")
+  print("They are not related")
 }else{
-  print("It does not have correlation coefficient")
+  print("They are related")
 }
 ```
 
@@ -337,7 +337,7 @@ rs
 Use the cor.test() function to find Spearman’s rank correlation coefficient and compare it to the one from part (e)
 
 Solution 9f
-```{r}
+```{r, message=FALSE, warning=FALSE}
 test <- cor.test(car$speed, car$dist, method = "spearman")
 rho <- test$estimate [[1]]
 rho
